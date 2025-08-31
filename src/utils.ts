@@ -37,7 +37,7 @@ function parseBase64(base64: string): Part {
   }
 
   const [m, data, ..._arr] = base64.split(",")
-  const mimeType = m.match(/:(?<mime>.*?);/)?.groups?.mime ?? "img/png"
+  const mimeType = m.match(/:(?<mime>.*?);/)?.groups?.mime ?? "image/png"
   return {
     inlineData: {
       mimeType,

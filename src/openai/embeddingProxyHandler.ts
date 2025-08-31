@@ -64,10 +64,10 @@ export async function embeddingProxyHandler(rawReq: Request): Promise<Response> 
 
     // Now, format the collected embeddings into the OpenAI-compatible response structure
     const responseData = allEmbeddings.map((embedding, index) => ({
-      object: "embedding",
-      index: index,
-      embedding: embedding,
-    }));
+      object: "embedding" as const,
+      index,
+      embedding,
+    })) satisfies OpenAI.Embeddings.CreateEmbeddingResponse["data"];
 
     const finalResponse: OpenAI.Embeddings.CreateEmbeddingResponse = {
       object: "list",

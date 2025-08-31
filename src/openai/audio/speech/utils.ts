@@ -30,8 +30,15 @@ async function base64ToBytes(base64: string): Promise<Uint8Array> {
     return bytes;
 }
 
+// Use a chunked approach to avoid "Maximum call stack size exceeded" for large byte arrays
 async function bytesToBase64(bytes: Uint8Array): Promise<string> {
-    return btoa(String.fromCharCode.apply(null, Array.from(bytes)));
+    let binary = "";
+    const chunkSize = 0x8000; // 32KB per chunk – safe for Function.apply
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        const chunk = bytes.subarray(i, i + chunkSize);
+        binary += String.fromCharCode(...chunk);
+    }
+    return btoa(binary);
 }
 
 function uuid(): string {
